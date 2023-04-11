@@ -1,20 +1,19 @@
-import { useState, ReactNode, PropsWithoutRef } from "react"
+import { ReactNode, PropsWithoutRef, useState } from "react"
 import { FormProvider, useForm, UseFormProps } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
+import { Alert, AlertDescription, AlertIcon, Button, Flex, VStack } from "@chakra-ui/react"
 
 export interface FormProps<S extends z.ZodType<any, any>>
   extends Omit<PropsWithoutRef<JSX.IntrinsicElements["form"]>, "onSubmit"> {
-  /** All your form fields */
   children?: ReactNode
-  /** Text to display in the submit button */
   submitText?: string
   schema?: S
   onSubmit: (values: z.infer<S>) => Promise<void | OnSubmitResult>
   initialValues?: UseFormProps<z.infer<S>>["defaultValues"]
 }
 
-interface OnSubmitResult {
+export interface OnSubmitResult {
   FORM_ERROR?: string
   [prop: string]: any
 }
@@ -30,10 +29,11 @@ export function Form<S extends z.ZodType<any, any>>({
   ...props
 }: FormProps<S>) {
   const ctx = useForm<z.infer<S>>({
-    mode: "onBlur",
+    mode: "onChange",
     resolver: schema ? zodResolver(schema) : undefined,
     defaultValues: initialValues,
   })
+
   const [formError, setFormError] = useState<string | null>(null)
 
   return (
@@ -55,26 +55,25 @@ export function Form<S extends z.ZodType<any, any>>({
         className="form"
         {...props}
       >
-        {/* Form fields supplied as children are rendered here */}
-        {children}
+        <VStack gap={8}>
+          {formError && (
+            <Alert status={"error"} variant={"solid"}>
+              <AlertIcon />
+              <AlertDescription>{formError}</AlertDescription>
+            </Alert>
+          )}
+          <VStack gap={2} width={"full"}>
+            {children}
 
-        {formError && (
-          <div role="alert" style={{ color: "red" }}>
-            {formError}
-          </div>
-        )}
-
-        {submitText && (
-          <button type="submit" disabled={ctx.formState.isSubmitting}>
-            {submitText}
-          </button>
-        )}
-
-        <style global jsx>{`
-          .form > * + * {
-            margin-top: 1rem;
-          }
-        `}</style>
+            {submitText && (
+              <Flex justifyContent={"flex-end"} width={"full"}>
+                <Button type="submit" disabled={ctx.formState.isSubmitting} variant={"primary"}>
+                  {submitText}
+                </Button>
+              </Flex>
+            )}
+          </VStack>
+        </VStack>
       </form>
     </FormProvider>
   )

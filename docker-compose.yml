@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres:13-alpine
+    container_name: db
+    volumes:
+      - data-rental-income-manager:/var/lib/postgresql/data
+    env_file: ./.env.db
+    ports:
+      - "5432:5432"
+
+volumes:
+  data-rental-income-manager:

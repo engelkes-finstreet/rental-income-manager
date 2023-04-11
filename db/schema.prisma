@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -23,6 +23,7 @@ model User {
 
   tokens   Token[]
   sessions Session[]
+  buildings Building[]
 }
 
 model Session {
@@ -45,9 +46,7 @@ model Token {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   hashedToken String
-  type        String
-  // See note below about TokenType enum
-  // type        TokenType
+  type        TokenType
   expiresAt   DateTime
   sentTo      String
 
@@ -57,9 +56,68 @@ model Token {
   @@unique([hashedToken, type])
 }
 
-// NOTE: It's highly recommended to use an enum for the token type
-//       but enums only work in Postgres.
-//       See: https://blitzjs.com/docs/database-overview#switch-to-postgre-sql
-// enum TokenType {
-//   RESET_PASSWORD
-// }
+ enum TokenType {
+   RESET_PASSWORD
+ }
+
+ model Building {
+   id        Int       @id @default(autoincrement())
+   createdAt DateTime  @default(now())
+   updatedAt DateTime  @updatedAt
+   city      String
+   street    String
+   number    Int
+
+   renters   Renter[]
+
+   owner   User? @relation(fields: [ownerId], references: [id])
+   ownerId Int?
+ }
+
+ model Renter {
+   id         Int       @id @default(autoincrement())
+   createdAt  DateTime  @default(now())
+   updatedAt  DateTime  @updatedAt
+   name       String
+   email      String    @unique
+   iban       String
+
+   building   Building @relation(fields: [buildingId], references: [id])
+   buildingId Int
+
+   rentPayments PaidRent[]
+   rentContract RentContract?
+ }
+
+
+model RentContract {
+  id            Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  amount        Float
+  startDate     DateTime
+  endDate       DateTime?
+  parkingAmount Float?
+
+  renter   Renter? @relation(fields: [renterId], references: [id])
+  renterId Int? @unique
+}
+
+model PaidRent {
+  id           Int         @id @default(autoincrement())
+  amount       Float
+  renter       Renter      @relation(fields: [renterId], references: [id])
+  renterId     Int
+  rentPeriod   RentPeriod  @relation(fields: [rentPeriodId], references: [id])
+  rentPeriodId Int
+}
+
+model RentPeriod {
+  id          Int       @id @default(autoincrement())
+  year        Int
+  month       Int
+  paidRents   PaidRent[]
+
+  @@unique([year, month])
+}
+
