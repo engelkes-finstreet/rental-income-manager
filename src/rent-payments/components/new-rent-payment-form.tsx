@@ -4,6 +4,8 @@ import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { LabeledFileDropzone } from "../../core/components/form/fields/file-dropzone"
 import * as z from "zod"
+import { useRouter } from "next/router"
+import { Routes } from "@blitzjs/next"
 
 export const UploadRentPaymentSchema = z.object({
   file: z.instanceof(Object, { message: "Bitte eine Datei auswählen" }),
@@ -20,23 +22,40 @@ const uploadFile = async ({ file, year, month }: { file: any; year: number; mont
   formData.append("year", year.toString())
   formData.append("month", month.toString())
 
-  const response = await axios.post("/api/upload-rent-payment", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  })
+  try {
+    const response = await axios.post("/api/upload-rent-payment", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
 
-  return response.data
+    return {
+      status: response.status,
+    }
+  } catch (e) {
+    console.error(e)
+    return {
+      status: 500,
+    }
+  }
 }
 
 export const NewRentPaymentForm = () => {
   const uploadFileMutation = useMutation(uploadFile)
+  const router = useRouter()
 
   return (
     <Form
       schema={UploadRentPaymentSchema}
       onSubmit={async (values) => {
-        const result = await uploadFileMutation.mutateAsync(values)
+        try {
+          const { status } = await uploadFileMutation.mutateAsync(values)
+          if (status === 200) {
+            await router.push(Routes.RentersPage())
+          }
+        } catch (e) {
+          console.error(e)
+        }
       }}
       submitText={"Upload"}
     >

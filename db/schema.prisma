@@ -7,7 +7,8 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "darwin"]
 }
 
 // --------------------------------------
@@ -21,8 +22,8 @@ model User {
   hashedPassword String?
   role           String   @default("USER")
 
-  tokens   Token[]
-  sessions Session[]
+  tokens    Token[]
+  sessions  Session[]
   buildings Building[]
 }
 
@@ -42,9 +43,9 @@ model Session {
 }
 
 model Token {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   hashedToken String
   type        TokenType
   expiresAt   DateTime
@@ -56,39 +57,38 @@ model Token {
   @@unique([hashedToken, type])
 }
 
- enum TokenType {
-   RESET_PASSWORD
- }
+enum TokenType {
+  RESET_PASSWORD
+}
 
- model Building {
-   id        Int       @id @default(autoincrement())
-   createdAt DateTime  @default(now())
-   updatedAt DateTime  @updatedAt
-   city      String
-   street    String
-   number    Int
+model Building {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  city      String
+  street    String
+  number    Int
 
-   renters   Renter[]
+  renters Renter[]
 
-   owner   User? @relation(fields: [ownerId], references: [id])
-   ownerId Int?
- }
+  owner   User? @relation(fields: [ownerId], references: [id])
+  ownerId Int?
+}
 
- model Renter {
-   id         Int       @id @default(autoincrement())
-   createdAt  DateTime  @default(now())
-   updatedAt  DateTime  @updatedAt
-   name       String
-   email      String    @unique
-   iban       String
+model Renter {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  email     String   @unique
+  iban      String
 
-   building   Building @relation(fields: [buildingId], references: [id])
-   buildingId Int
+  building   Building @relation(fields: [buildingId], references: [id])
+  buildingId Int
 
-   rentPayments PaidRent[]
-   rentContract RentContract?
- }
-
+  rentPayments PaidRent[]
+  rentContract RentContract?
+}
 
 model RentContract {
   id            Int       @id @default(autoincrement())
@@ -100,24 +100,23 @@ model RentContract {
   parkingAmount Float?
 
   renter   Renter? @relation(fields: [renterId], references: [id])
-  renterId Int? @unique
+  renterId Int?    @unique
 }
 
 model PaidRent {
-  id           Int         @id @default(autoincrement())
+  id           Int        @id @default(autoincrement())
   amount       Float
-  renter       Renter      @relation(fields: [renterId], references: [id])
+  renter       Renter     @relation(fields: [renterId], references: [id])
   renterId     Int
-  rentPeriod   RentPeriod  @relation(fields: [rentPeriodId], references: [id])
+  rentPeriod   RentPeriod @relation(fields: [rentPeriodId], references: [id])
   rentPeriodId Int
 }
 
 model RentPeriod {
-  id          Int       @id @default(autoincrement())
-  year        Int
-  month       Int
-  paidRents   PaidRent[]
+  id        Int        @id @default(autoincrement())
+  year      Int
+  month     Int
+  paidRents PaidRent[]
 
   @@unique([year, month])
 }
-

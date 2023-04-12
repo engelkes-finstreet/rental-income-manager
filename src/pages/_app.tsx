@@ -5,7 +5,6 @@ import { withBlitz } from "src/blitz-client"
 import "src/styles/globals.css"
 import { ChakraProvider } from "@chakra-ui/react"
 import { theme } from "../core/chakra"
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
 function RootErrorFallback({ error }: ErrorFallbackProps) {
   if (error instanceof AuthenticationError) {
@@ -27,17 +26,13 @@ function RootErrorFallback({ error }: ErrorFallbackProps) {
   }
 }
 
-const queryClient = new QueryClient()
-
 function MyApp({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page)
   return (
     <ChakraProvider theme={theme}>
-      <QueryClientProvider client={queryClient}>
-        <ErrorBoundary FallbackComponent={RootErrorFallback}>
-          <Suspense fallback={"Loading..."}>{getLayout(<Component {...pageProps} />)}</Suspense>
-        </ErrorBoundary>
-      </QueryClientProvider>
+      <ErrorBoundary FallbackComponent={RootErrorFallback}>
+        <Suspense fallback={"Loading..."}>{getLayout(<Component {...pageProps} />)}</Suspense>
+      </ErrorBoundary>
     </ChakraProvider>
   )
 }

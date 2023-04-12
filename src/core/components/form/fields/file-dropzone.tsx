@@ -6,8 +6,12 @@ import { FormError, useError } from "../form-error"
 
 const FileDropzone = ({ onChange }) => {
   const onDrop = useCallback(
-    (acceptedFiles) => {
-      onChange(acceptedFiles[0])
+    (acceptedFiles, fileRejections) => {
+      if (fileRejections.length) {
+        console.log(fileRejections[0].errors[0].message)
+      } else {
+        onChange(acceptedFiles[0])
+      }
     },
     [onChange]
   )
@@ -15,6 +19,9 @@ const FileDropzone = ({ onChange }) => {
   const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({
     onDrop,
     maxFiles: 1,
+    accept: {
+      csv: [".csv"],
+    },
   })
 
   const withoutFiles = isDragActive ? (

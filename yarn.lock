@@ -979,10 +979,10 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@blitzjs/auth@2.0.0-beta.24":
-  version "2.0.0-beta.24"
-  resolved "https://registry.yarnpkg.com/@blitzjs/auth/-/auth-2.0.0-beta.24.tgz#7b2d8cb1d25b3f23dfefb7db0c31b94ab68210e1"
-  integrity sha512-X8OFTz733I2p7FKUVFgBg/Dhx+zC74LElNd5mW7lWJw2ddrQkQxGvDu9dvCFhakEp5iXipebbsTCHTowJJQYiA==
+"@blitzjs/auth@2.0.0-beta.26":
+  version "2.0.0-beta.26"
+  resolved "https://registry.yarnpkg.com/@blitzjs/auth/-/auth-2.0.0-beta.26.tgz#9eef4de71b60d89b66acd93fd9653ab93a0df32d"
+  integrity sha512-gggSgcH1kkGumgLWdKsQr/8NLjiaCVVBHNXNnBMgPj/EFsrvzZpjchhWhxNa5CiO25THRmdr12PO9do6Q98iUA==
   dependencies:
     "@types/b64-lite" "1.3.0"
     "@types/cookie-session" "2.0.44"
@@ -1004,10 +1004,10 @@
     supports-color "8.1.1"
     url "0.11.0"
 
-"@blitzjs/generator@2.0.0-beta.24":
-  version "2.0.0-beta.24"
-  resolved "https://registry.yarnpkg.com/@blitzjs/generator/-/generator-2.0.0-beta.24.tgz#a877f89adbfcddff91909b4a923c66c440faa90d"
-  integrity sha512-hn4UExdXJareIW5gL9N22r4x5H5+VTESroSrNeOd6MNOGbklay7Y1TxoBfDrotWvytHFk4pwn2cwMl+kd9ARPQ==
+"@blitzjs/generator@2.0.0-beta.26":
+  version "2.0.0-beta.26"
+  resolved "https://registry.yarnpkg.com/@blitzjs/generator/-/generator-2.0.0-beta.26.tgz#57e262a2e746d7466c413acf971c0d21396682d7"
+  integrity sha512-ruL0ynYpKQsxl6pW3GcwIfwar4Ct9hpI2XfPKjDBfGDKYs1P3tTDlBUWXZpXXuU+9ymO+H/ZaWbpo0y373rvoQ==
   dependencies:
     "@babel/core" "7.12.10"
     "@babel/plugin-transform-typescript" "7.12.1"
@@ -1037,12 +1037,12 @@
     vinyl "2.2.1"
     zod "3.20.2"
 
-"@blitzjs/next@2.0.0-beta.24":
-  version "2.0.0-beta.24"
-  resolved "https://registry.yarnpkg.com/@blitzjs/next/-/next-2.0.0-beta.24.tgz#dc6f5cc3b0f6d5d62c891b12510c21e95a0435fc"
-  integrity sha512-1wxkIKu9sYQ0sv5Bi7ddGnQhPKhOdg6KpV+OT1odsnwq154jg6ofH+gUA7MWxyTb1o6cpRoxKMJRYsu6ZdAmAw==
+"@blitzjs/next@2.0.0-beta.26":
+  version "2.0.0-beta.26"
+  resolved "https://registry.yarnpkg.com/@blitzjs/next/-/next-2.0.0-beta.26.tgz#f73b9f191345bd63850ab3dc377a9ac90033b1d3"
+  integrity sha512-GKTV4ovy4dHbIO09dILelWb/GM+c8n8i+R0376Vk4EbDpOdz+IkM/3BVYNU9bKKhtvniRxJaFurs0+ZyVaTTBA==
   dependencies:
-    "@blitzjs/rpc" "2.0.0-beta.24"
+    "@blitzjs/rpc" "2.0.0-beta.26"
     "@types/hoist-non-react-statics" "3.3.1"
     debug "4.3.3"
     fs-extra "10.0.1"
@@ -1050,10 +1050,10 @@
     superjson "1.11.0"
     supports-color "8.1.1"
 
-"@blitzjs/rpc@2.0.0-beta.24":
-  version "2.0.0-beta.24"
-  resolved "https://registry.yarnpkg.com/@blitzjs/rpc/-/rpc-2.0.0-beta.24.tgz#c67146080b1bb21b9d3bccf6a82c132e3b72a043"
-  integrity sha512-b7itq2Dn2H2lwU1jEVeHLCsyIkRO6uqQK4y5NDko2lj/bs7Ca2ioYSJQib/EzuVFNRouKNHP4Ge4uUZpyMkjRQ==
+"@blitzjs/rpc@2.0.0-beta.26":
+  version "2.0.0-beta.26"
+  resolved "https://registry.yarnpkg.com/@blitzjs/rpc/-/rpc-2.0.0-beta.26.tgz#11bbf04d4c209a8c7155df3b32813d56eb707f58"
+  integrity sha512-9cKuLiOky4NOh457B5gbwFXHBykRTfpCDG/ili4JhYax3cyBgmVoIFg/oZAqXFMEUvS0/3OJ8T8dIpAMGJZOew==
   dependencies:
     "@swc/core" "1.3.7"
     "@tanstack/react-query" "4.24.4"
@@ -3517,12 +3517,12 @@ bl@^4.0.3, bl@^4.1.0:
     inherits "^2.0.4"
     readable-stream "^3.4.0"
 
-blitz@2.0.0-beta.24:
-  version "2.0.0-beta.24"
-  resolved "https://registry.yarnpkg.com/blitz/-/blitz-2.0.0-beta.24.tgz#3e897610dde52abeb883d2e12d523c875436a75d"
-  integrity sha512-DjobD9jUETQxsWtR/M9ucUY94dMenCxAM+UHq8dbSw6a72X3eFl7IsKZ8OS/PQMdlpGN43mSg1MGFu1fKJ7Hhg==
+blitz@2.0.0-beta.26:
+  version "2.0.0-beta.26"
+  resolved "https://registry.yarnpkg.com/blitz/-/blitz-2.0.0-beta.26.tgz#a088ec0242af63e02d0dffd9690fb1afa3852937"
+  integrity sha512-ypqAcAGkaKVi8NvJRkMTI7svDJ34a7dEuPsqEq1prhEL8T5RWOvVSeFEey+6PTzgz+pnnqh3gpGXuHRMREtkOg==
   dependencies:
-    "@blitzjs/generator" "2.0.0-beta.24"
+    "@blitzjs/generator" "2.0.0-beta.26"
     "@mrleebo/prisma-ast" "0.2.6"
     "@types/global-agent" "2.1.1"
     arg "5.0.1"
@@ -7598,7 +7598,7 @@ next-connect@0.13.0:
   dependencies:
     trouter "^3.2.0"
 
-next@13.2.4:
+next@13.2:
   version "13.2.4"
   resolved "https://registry.yarnpkg.com/next/-/next-13.2.4.tgz#2363330392b0f7da02ab41301f60857ffa7f67d6"
   integrity sha512-g1I30317cThkEpvzfXujf0O4wtaQHtDCLhlivwlTJ885Ld+eOgcz7r3TGQzeU+cSRoNHtD8tsJgzxVdYojFssw==
