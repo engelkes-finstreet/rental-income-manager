@@ -1,4 +1,4 @@
-import db from "db"
+import db, { PaymentStatus } from "db"
 import { NextApiRequest, NextApiResponse } from "next"
 import Papa from "papaparse"
 import { uploadMiddleware } from "src/core/middlewares/upload-middleware"
@@ -42,6 +42,19 @@ function parseCSVContent(csvContent: string) {
   return result
 }
 
+function determinePaymentStatus(rentToPay: number, amountPaid: number): PaymentStatus {
+  if (amountPaid === 0) {
+    return PaymentStatus.NOTHING_PAID
+  }
+  if (amountPaid < rentToPay) {
+    return PaymentStatus.PARTIALLY_PAID
+  }
+  if (amountPaid === rentToPay) {
+    return PaymentStatus.FULLY_PAID
+  }
+  return PaymentStatus.OVERPAID
+}
+
 async function calculatePaidRent(
   uploadRentContent: UploadRentPayment[],
   rentPeriodInput: RentPeriod
@@ -57,16 +70,37 @@ async function calculatePaidRent(
       rentContract: true,
     },
   })
+
+  for (const renter of renters) {
+    const matchingPayment = uploadRentContent.find((payment) => payment.iban === renter.iban)
+
+    if (matchingPayment && renter.rentContract) {
+      const parkingAmount = renter.rentContract.parkingAmount || 0
+      const rentToPay = renter.rentContract.amount + parkingAmount
+      const rentPaymentStatus = determinePaymentStatus(rentToPay, matchingPayment.amount)
+
+      await db.paidRent.create({
+        data: {
+          renterId: renter.id,
+          status: rentPaymentStatus,
+          amount: matchingPayment.amount,
+          rentPeriodId: rentPeriod.id,
+        },
+      })
+    }
+  }
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     try {
       await uploadMiddleware(req, res)
+
       const buffer = req.file.buffer
       const csvContent = parseCSVContent(buffer.toString())
       const input = UploadRentPaymentSchema.parse(req.body)
-      console.log({ csvContent, input })
+
+      await calculatePaidRent(csvContent, input)
 
       res.status(200).send({ message: "File uploaded successfully" })
     } catch (error) {

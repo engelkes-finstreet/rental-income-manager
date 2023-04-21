@@ -103,9 +103,17 @@ model RentContract {
   renterId Int?    @unique
 }
 
+enum PaymentStatus {
+  FULLY_PAID
+  NOTHING_PAID
+  PARTIALLY_PAID
+  OVERPAID
+}
+
 model PaidRent {
   id           Int        @id @default(autoincrement())
   amount       Float
+  status      PaymentStatus
   renter       Renter     @relation(fields: [renterId], references: [id])
   renterId     Int
   rentPeriod   RentPeriod @relation(fields: [rentPeriodId], references: [id])

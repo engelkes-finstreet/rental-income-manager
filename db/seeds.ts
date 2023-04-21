@@ -1,4 +1,4 @@
-import db, { Prisma } from "./index"
+import db, { PaymentStatus, Prisma } from "./index"
 import { SecurePassword } from "@blitzjs/auth/secure-password"
 
 const seed = async () => {
@@ -76,6 +76,7 @@ const seed = async () => {
       rentPeriodId: rentPeriod1.id,
       renterId: renter1.id,
       amount: 500,
+      status: PaymentStatus.PARTIALLY_PAID,
     },
   })
 
@@ -84,6 +85,7 @@ const seed = async () => {
       rentPeriodId: rentPeriod1.id,
       renterId: renter2.id,
       amount: 1000,
+      status: PaymentStatus.PARTIALLY_PAID,
     },
   })
 
@@ -92,6 +94,7 @@ const seed = async () => {
       rentPeriodId: rentPeriod2.id,
       renterId: renter1.id,
       amount: 1100,
+      status: PaymentStatus.FULLY_PAID,
     },
   })
 
@@ -99,7 +102,8 @@ const seed = async () => {
     data: {
       rentPeriodId: rentPeriod2.id,
       renterId: renter2.id,
-      amount: 2080,
+      amount: 2100,
+      status: PaymentStatus.OVERPAID,
     },
   })
 }
