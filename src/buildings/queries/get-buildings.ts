@@ -4,7 +4,7 @@ import db, { Prisma } from "db"
 const getAllBuildings = resolver.pipe(async (input) => {
   return await db.building.findMany({
     include: {
-      renters: true,
+      renterGroups: true,
     },
   })
 })

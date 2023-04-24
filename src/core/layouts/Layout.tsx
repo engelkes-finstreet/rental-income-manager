@@ -7,7 +7,7 @@ import { RouteUrlObject } from "blitz"
 import { TbBuildingEstate, TbMoneybag } from "react-icons/tb"
 import { IconType } from "react-icons"
 
-type NavItem = {
+export type NavItem = {
   label: string
   href: RouteUrlObject
   icon: IconType

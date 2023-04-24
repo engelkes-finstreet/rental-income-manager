@@ -14,7 +14,7 @@ async function getRentersByPaymentStatus(
   latestRentPeriodId: number,
   buildingId: number
 ) {
-  return await db.renter.findMany({
+  return await db.renterGroup.findMany({
     where: {
       buildingId,
       rentPayments: {
@@ -31,6 +31,7 @@ async function getRentersByPaymentStatus(
           rentPeriodId: latestRentPeriodId,
         },
       },
+      renters: true,
     },
   })
 }

@@ -3,12 +3,16 @@ import db from "db"
 import * as z from "zod"
 
 export const NewRenterSchema = z.object({
-  renter: z.object({
-    name: z.string().min(1, "Name is required"),
-    email: z.string().email("Invalid email address"),
+  renterGroup: z.object({
     iban: z.string().min(1, "IBAN is required"),
     buildingId: z.number().int().min(1, "Building ID must be greater than 0"),
   }),
+  renters: z
+    .object({
+      name: z.string().min(1, "Name is required"),
+      email: z.string().email("Invalid email address"),
+    })
+    .array(),
   rentContract: z.object({
     amount: z.number().min(1, "Amount is required"),
     startDate: z.date(),
@@ -18,18 +22,30 @@ export const NewRenterSchema = z.object({
 
 export default resolver.pipe(
   resolver.zod(NewRenterSchema),
-  async ({ renter: renterInput, rentContract: rentContractInput }) => {
-    const renter = await db.renter.create({ data: renterInput })
-    const rentContract = await db.rentContract.create({
+  async ({
+    renters: rentersInput,
+    rentContract: rentContractInput,
+    renterGroup: renterGroupInput,
+  }) => {
+    const renterGroup = await db.renterGroup.create({
+      data: renterGroupInput,
+    })
+
+    await db.rentContract.create({
       data: {
-        renterId: renter.id,
+        renterGroupId: renterGroup.id,
         ...rentContractInput,
       },
     })
-
-    return {
-      renter,
-      rentContract,
+    for (let renterInput of rentersInput) {
+      await db.renter.create({
+        data: {
+          renterGroupId: renterGroup.id,
+          ...renterInput,
+        },
+      })
     }
+
+    return renterGroup
   }
 )

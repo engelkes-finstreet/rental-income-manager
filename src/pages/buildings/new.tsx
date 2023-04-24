@@ -1,4 +1,4 @@
-import { NewBuildingForm } from "../../buildings/components/new-building-form"
+import { NewBuildingForm } from "../../buildings/components/building-form"
 import Layout from "../../core/layouts/Layout"
 
 const NewBuildingPage = () => {

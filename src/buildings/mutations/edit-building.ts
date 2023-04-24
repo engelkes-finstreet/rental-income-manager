@@ -3,7 +3,7 @@ import db from "db"
 import * as z from "zod"
 import { NewBuildingSchema } from "./new-building"
 
-const EditBuildingSchema = NewBuildingSchema.extend({
+export const EditBuildingSchema = NewBuildingSchema.extend({
   id: z.number(),
 })
 

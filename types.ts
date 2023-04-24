@@ -20,3 +20,8 @@ declare module "@blitzjs/auth" {
     }
   }
 }
+
+export type ButtonAction = {
+  label: string
+  onClick: () => void
+}

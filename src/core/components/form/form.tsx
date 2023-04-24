@@ -2,7 +2,8 @@ import { ReactNode, PropsWithoutRef, useState } from "react"
 import { FormProvider, useForm, UseFormProps } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { Alert, AlertDescription, AlertIcon, Button, Flex, VStack } from "@chakra-ui/react"
+import { Alert, AlertDescription, AlertIcon, Button, Flex, HStack, VStack } from "@chakra-ui/react"
+import { useRouter } from "next/router"
 
 export interface FormProps<S extends z.ZodType<any, any>>
   extends Omit<PropsWithoutRef<JSX.IntrinsicElements["form"]>, "onSubmit"> {
@@ -33,6 +34,7 @@ export function Form<S extends z.ZodType<any, any>>({
     resolver: schema ? zodResolver(schema) : undefined,
     defaultValues: initialValues,
   })
+  const router = useRouter()
 
   const [formError, setFormError] = useState<string | null>(null)
 
@@ -66,11 +68,14 @@ export function Form<S extends z.ZodType<any, any>>({
             {children}
 
             {submitText && (
-              <Flex justifyContent={"flex-end"} width={"full"}>
+              <HStack justifyContent={"flex-end"} width={"full"} gap={4}>
+                <Button variant={"secondary"} onClick={() => router.back()}>
+                  Zurück
+                </Button>
                 <Button type="submit" disabled={ctx.formState.isSubmitting} variant={"primary"}>
                   {submitText}
                 </Button>
-              </Flex>
+              </HStack>
             )}
           </VStack>
         </VStack>

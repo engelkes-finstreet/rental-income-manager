@@ -5,7 +5,8 @@ import { Routes } from "@blitzjs/next"
 import { useRouter } from "next/router"
 
 export const RentersTable = () => {
-  const [renters] = useQuery(getRenters, undefined)
+  const [renterGroups] = useQuery(getRenters, undefined)
+  console.log({ renterGroups })
   const router = useRouter()
 
   return (
@@ -20,19 +21,19 @@ export const RentersTable = () => {
         </Tr>
       </Thead>
       <Tbody>
-        {renters.map((renter) => (
+        {renterGroups.map((renterGroup) => (
           <Tr
-            key={renter.id}
+            key={renterGroup.id}
             onClick={async () => {
-              await router.push(Routes.RenterDetailPage({ renterId: renter.id }))
+              await router.push(Routes.RenterDetailPage({ renterId: renterGroup.id }))
             }}
             cursor={"pointer"}
           >
-            <Td>{renter.name}</Td>
-            <Td>{renter.email}</Td>
-            <Td>{renter.iban}</Td>
-            <Td>{renter.rentContract?.amount}</Td>
-            <Td>{renter.rentContract?.parkingAmount}</Td>
+            <Td>{renterGroup.renters[0]?.name}</Td>
+            <Td>{renterGroup.renters[0]?.email}</Td>
+            <Td>{renterGroup.iban}</Td>
+            <Td>{renterGroup.rentContract?.amount}</Td>
+            <Td>{renterGroup.rentContract?.parkingAmount}</Td>
           </Tr>
         ))}
       </Tbody>

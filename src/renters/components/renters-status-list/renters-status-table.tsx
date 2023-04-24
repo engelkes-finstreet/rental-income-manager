@@ -1,16 +1,15 @@
 import { PaymentStatus } from "db"
 import { RentersByPaymentStatus } from "src/renters/queries/get-renters-by-building-and-payment-status"
 import { Box, Heading, Table, Thead, Tbody, Tr, Th, Td, Badge } from "@chakra-ui/react"
-import { translatePaymentStatus } from "../../../core/translations/mapEnumToTranslation"
 import { PaymentStatusBadge } from "../../../rent-payments/components/payment-status-badge"
 
 type Props = {
   status: PaymentStatus
-  renters: RentersByPaymentStatus
+  renterGroups: RentersByPaymentStatus
 }
 
-export const RentersStatusTable = ({ renters, status }: Props) => {
-  if (renters.length === 0) {
+export const RentersStatusTable = ({ renterGroups, status }: Props) => {
+  if (renterGroups.length === 0) {
     return null
   }
 
@@ -28,11 +27,11 @@ export const RentersStatusTable = ({ renters, status }: Props) => {
           </Tr>
         </Thead>
         <Tbody>
-          {renters.map((renter) => (
-            <Tr key={renter.id}>
-              <Td>{renter.name}</Td>
-              <Td>{renter.email}</Td>
-              <Td>{renter.iban}</Td>
+          {renterGroups.map((renterGroup) => (
+            <Tr key={renterGroup.id}>
+              <Td>{renterGroup.renters[0]?.name}</Td>
+              <Td>{renterGroup.renters[0]?.email}</Td>
+              <Td>{renterGroup.iban}</Td>
             </Tr>
           ))}
         </Tbody>

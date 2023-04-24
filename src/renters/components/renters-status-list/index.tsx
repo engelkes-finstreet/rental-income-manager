@@ -8,6 +8,7 @@ import getAllRentPeriods from "../../../rent-periods/queries/get-all-rent-period
 import { useState } from "react"
 import { CustomSelect } from "../../../core/components/form/fields/custom-select"
 import { Option } from "../../../core/components/form/fields/custom-select/option"
+import { rentPeriodToString } from "../../../core/models/rent-period"
 
 export const RentersStatusList = () => {
   const buildingId = useParam("buildingId", "number")
@@ -15,34 +16,41 @@ export const RentersStatusList = () => {
   const [selectedRentPeriod, setSelectedRentPeriod] = useState<string | number | null | undefined>(
     rentPeriods[0]?.id
   )
-  const [rentersByStatus] = useQuery(getRentersByBuildingAndPaymentStatus, {
+  const [renterGroupsByStatus] = useQuery(getRentersByBuildingAndPaymentStatus, {
     buildingId: buildingId!!,
     rentPeriodId: selectedRentPeriod!! as number,
   })
 
   return (
-    <Box>
+    <Box w={"full"}>
       <Flex justifyContent={"space-between"} alignItems={"center"}>
-        <Heading as={"h2"} size={"lg"} mb={6}>
-          Renters Payment Status
+        <Heading as={"h2"} size={"xs"} mb={6}>
+          Status Mietzahlungen
         </Heading>
-        <CustomSelect
-          onChange={(item) => {
-            setSelectedRentPeriod(item)
-          }}
-          value={selectedRentPeriod}
-        >
-          {rentPeriods.map((rentPeriod) => (
-            <Option value={rentPeriod.id} key={rentPeriod.id}>
-              <HStack>
-                <Text>{`${rentPeriod.month} ${rentPeriod.year}`}</Text>
-              </HStack>
-            </Option>
-          ))}
-        </CustomSelect>
+        <HStack gap={4}>
+          <Text>Zeitraum:</Text>
+          <CustomSelect
+            onChange={(item) => {
+              setSelectedRentPeriod(item)
+            }}
+            value={selectedRentPeriod}
+          >
+            {rentPeriods.map((rentPeriod) => (
+              <Option value={rentPeriod.id} key={rentPeriod.id}>
+                <HStack>
+                  <Text>{rentPeriodToString(rentPeriod)}</Text>
+                </HStack>
+              </Option>
+            ))}
+          </CustomSelect>
+        </HStack>
       </Flex>
-      {Object.entries(rentersByStatus).map(([status, renters]) => (
-        <RentersStatusTable key={status} status={status as PaymentStatus} renters={renters} />
+      {Object.entries(renterGroupsByStatus).map(([status, renterGroups]) => (
+        <RentersStatusTable
+          key={status}
+          status={status as PaymentStatus}
+          renterGroups={renterGroups}
+        />
       ))}
     </Box>
   )

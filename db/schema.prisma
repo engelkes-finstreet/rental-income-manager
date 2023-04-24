@@ -69,25 +69,33 @@ model Building {
   street    String
   number    Int
 
-  renters Renter[]
+  renterGroups RenterGroup[]
 
   owner   User? @relation(fields: [ownerId], references: [id])
   ownerId Int?
 }
 
-model Renter {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String
-  email     String   @unique
-  iban      String
-
+model RenterGroup {
+  id            Int          @id @default(autoincrement())
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  iban          String
+  rentContract  RentContract?
+  rentPayments  PaidRent[]
+  renters       Renter[]
   building   Building @relation(fields: [buildingId], references: [id])
   buildingId Int
+}
 
-  rentPayments PaidRent[]
-  rentContract RentContract?
+model Renter {
+  id            Int          @id @default(autoincrement())
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  name          String
+  email         String       @unique
+
+  renterGroup   RenterGroup  @relation(fields: [renterGroupId], references: [id])
+  renterGroupId Int
 }
 
 model RentContract {
@@ -99,8 +107,8 @@ model RentContract {
   endDate       DateTime?
   parkingAmount Float?
 
-  renter   Renter? @relation(fields: [renterId], references: [id])
-  renterId Int?    @unique
+  renterGroup   RenterGroup? @relation(fields: [renterGroupId], references: [id])
+  renterGroupId Int?  @unique
 }
 
 enum PaymentStatus {
@@ -114,8 +122,8 @@ model PaidRent {
   id           Int        @id @default(autoincrement())
   amount       Float
   status      PaymentStatus
-  renter       Renter     @relation(fields: [renterId], references: [id])
-  renterId     Int
+  renterGroup   RenterGroup? @relation(fields: [renterGroupId], references: [id])
+  renterGroupId Int?
   rentPeriod   RentPeriod @relation(fields: [rentPeriodId], references: [id])
   rentPeriodId Int
 }

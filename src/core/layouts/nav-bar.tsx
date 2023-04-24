@@ -15,8 +15,27 @@ import {
 import { Logo } from "./logo"
 import { Sidebar } from "./side-bar"
 import { ToggleButton } from "./toggle-button"
-import { navItems } from "./Layout"
+import { NavItem, navItems } from "./Layout"
 import Link from "next/link"
+import { useAriaCurrentPage } from "../hooks/use-aria-current"
+import { RouteUrlObject } from "blitz"
+import React from "react"
+
+type NavBarButtonProps = {
+  navItem: NavItem
+}
+
+const NavBarButton = ({ navItem }: NavBarButtonProps) => {
+  const ariaCurrent = useAriaCurrentPage(navItem.href)
+
+  return (
+    <Link href={navItem.href} key={navItem.href.pathname} passHref legacyBehavior>
+      <Button as={"a"} aria-current={ariaCurrent}>
+        {navItem.label}
+      </Button>
+    </Link>
+  )
+}
 
 export const Navbar = () => {
   const isDesktop = useBreakpointValue({ base: false, lg: true })
@@ -31,9 +50,7 @@ export const Navbar = () => {
             {isDesktop && (
               <ButtonGroup variant="ghost-on-accent" spacing="1">
                 {navItems.map((item) => (
-                  <Link href={item.href} key={item.href.pathname} passHref legacyBehavior>
-                    <Button as={"a"}>{item.label}</Button>
-                  </Link>
+                  <NavBarButton navItem={item} />
                 ))}
               </ButtonGroup>
             )}

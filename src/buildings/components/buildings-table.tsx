@@ -1,8 +1,9 @@
-import getBuildings, { GetAllBuildingsType } from "../queries/get-buildings"
+import getBuildings from "../queries/get-buildings"
 import { Table, Thead, Tbody, Tr, Th, Td, Box } from "@chakra-ui/react"
 import { useQuery } from "@blitzjs/rpc"
 import { useRouter } from "next/router"
 import { Routes } from "@blitzjs/next"
+import { getBuildingName } from "../../core/models/building"
 
 export const BuildingsTable = () => {
   const [buildings] = useQuery(getBuildings, undefined)
@@ -26,12 +27,10 @@ export const BuildingsTable = () => {
             cursor={"pointer"}
           >
             <Td>
-              <Box>
-                {building.street} {building.number}, {building.city}
-              </Box>
+              <Box>{getBuildingName(building)}</Box>
             </Td>
             <Td>
-              <Box>{building.renters.length}</Box>
+              <Box>{building.renterGroups.length}</Box>
             </Td>
           </Tr>
         ))}

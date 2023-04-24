@@ -5,7 +5,9 @@ import Link from "next/link"
 export const Logo = () => {
   return (
     <Link href={Routes.Home()} legacyBehavior>
-      <Text as={"a"}>Rental Manager</Text>
+      <Text as={"a"} cursor={"pointer"}>
+        Rental Manager
+      </Text>
     </Link>
   )
 }
