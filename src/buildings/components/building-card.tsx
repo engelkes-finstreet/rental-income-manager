@@ -1,10 +1,30 @@
 import { Box, VStack, Text, Badge, HStack, Divider } from "@chakra-ui/react"
+import { motion } from "framer-motion"
+import { useRouter } from "next/router"
+import { Routes } from "@blitzjs/next"
+
+const MotionBox = motion(Box)
 
 const BuildingCard = ({ building }) => {
   const { city, street, number, expectedRent, receivedRent } = building
+  const router = useRouter()
+
+  const hoverAnimation = {
+    scale: 1.03,
+    transition: { duration: 0.2 },
+  }
 
   return (
-    <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p={6} width={"full"}>
+    <MotionBox
+      borderWidth="1px"
+      borderRadius="lg"
+      overflow="hidden"
+      p={6}
+      width={"full"}
+      whileHover={hoverAnimation}
+      cursor={"pointer"}
+      onClick={() => router.push(Routes.BuildingDetailPage({ buildingId: building.id }))}
+    >
       <VStack align="start" spacing={4} width={"full"}>
         <HStack justifyContent={"space-between"} width={"full"}>
           <VStack alignItems={"flex-start"}>
@@ -44,7 +64,7 @@ const BuildingCard = ({ building }) => {
           </HStack>
         </HStack>
       </VStack>
-    </Box>
+    </MotionBox>
   )
 }
 
