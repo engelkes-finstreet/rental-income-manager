@@ -76,26 +76,26 @@ model Building {
 }
 
 model RenterGroup {
-  id            Int          @id @default(autoincrement())
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  iban          String
-  rentContract  RentContract?
-  rentPayments  PaidRent[]
-  renters       Renter[]
-  building   Building @relation(fields: [buildingId], references: [id])
-  buildingId Int
+  id           Int           @id @default(autoincrement())
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  iban         String
+  rentContract RentContract?
+  rentPayments PaidRent[]
+  renters      Renter[]
+  building     Building      @relation(fields: [buildingId], references: [id])
+  buildingId   Int
 }
 
 model Renter {
-  id            Int          @id @default(autoincrement())
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  name          String
-  email         String       @unique
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  email     String   @unique
 
-  renterGroup   RenterGroup  @relation(fields: [renterGroupId], references: [id])
-  renterGroupId Int
+  renterGroup   RenterGroup? @relation(fields: [renterGroupId], references: [id])
+  renterGroupId Int?
 }
 
 model RentContract {
@@ -107,8 +107,8 @@ model RentContract {
   endDate       DateTime?
   parkingAmount Float?
 
-  renterGroup   RenterGroup? @relation(fields: [renterGroupId], references: [id])
-  renterGroupId Int?  @unique
+  renterGroup   RenterGroup @relation(fields: [renterGroupId], references: [id])
+  renterGroupId Int         @unique
 }
 
 enum PaymentStatus {
@@ -119,13 +119,13 @@ enum PaymentStatus {
 }
 
 model PaidRent {
-  id           Int        @id @default(autoincrement())
-  amount       Float
-  status      PaymentStatus
-  renterGroup   RenterGroup? @relation(fields: [renterGroupId], references: [id])
+  id            Int           @id @default(autoincrement())
+  amount        Float
+  status        PaymentStatus
+  renterGroup   RenterGroup?  @relation(fields: [renterGroupId], references: [id])
   renterGroupId Int?
-  rentPeriod   RentPeriod @relation(fields: [rentPeriodId], references: [id])
-  rentPeriodId Int
+  rentPeriod    RentPeriod    @relation(fields: [rentPeriodId], references: [id])
+  rentPeriodId  Int
 }
 
 model RentPeriod {
